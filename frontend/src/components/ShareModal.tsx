@@ -49,9 +49,25 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
       });
 
       const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      const pageHeight = pdf.internal.pageSize.getHeight(); // 297mm
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width;
 
-      pdf.addImage(imgData, "WEBP", 0, 0, pdfWidth, pdfHeight);
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      // Add the first page
+      pdf.addImage(imgData, "WEBP", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      // Slice and add new pages if content is taller than A4 page height (297mm)
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight; // shift the image upward
+        pdf.addPage();
+        pdf.addImage(imgData, "WEBP", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
       pdf.save(`Quotation_${quotation.qoNumber}_${template}.pdf`);
     } catch (error) {
       console.error("PDF generation failed:", error);
