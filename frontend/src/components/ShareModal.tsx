@@ -35,10 +35,13 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
     setGenerating(true);
 
     try {
-      const canvas = await html2canvas(printRef.current, {
+      const element = printRef.current;
+      const canvas = await html2canvas(element, {
         scale: 2,
         useCORS: true,
         logging: false,
+        height: element.scrollHeight,
+        windowHeight: element.scrollHeight,
       });
 
       const imgData = canvas.toDataURL("image/webp", 0.75); // Compressed WebP
