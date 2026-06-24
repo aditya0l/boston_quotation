@@ -310,5 +310,6 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
         </div>
       </div>
     </div>
+  </div>
   );
 }
