@@ -172,7 +172,7 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
                     <tr className="bg-primary text-white">
                       <th className="border border-gray-300 p-2 w-10 text-center uppercase">S.No</th>
                       <th className="border border-gray-300 p-2 text-center uppercase">Items</th>
-                      <th className="border border-gray-300 p-2 w-32 text-center uppercase">Picture</th>
+                      <th className="border border-gray-300 p-2 w-56 text-center uppercase">Picture</th>
                       {template === "loading" && <th className="border border-gray-300 p-2 text-center uppercase">Model No.</th>}
                       <th className="border border-gray-300 p-2 w-16 text-center uppercase">QTY</th>
                       {template === "wholesale" && <th className="border border-gray-300 p-2 w-24 text-center uppercase">MRP</th>}
@@ -187,7 +187,7 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
                         <td className="border border-gray-300 p-2 font-medium align-middle text-center">{item.productName}</td>
                         <td className="border border-gray-300 p-2 text-center align-middle">
                           {item.productImage ? (
-                            <img src={item.productImage} alt={item.productName} className="w-24 h-24 object-contain mx-auto" />
+                            <img src={item.productImage} alt={item.productName} className="w-48 h-48 object-contain mx-auto" />
                           ) : "-"}
                         </td>
                         {template === "loading" && <td className="border border-gray-300 p-2 text-center align-middle text-xs">{item.modelNo}</td>}
