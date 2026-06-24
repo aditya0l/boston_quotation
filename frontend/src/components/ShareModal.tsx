@@ -22,13 +22,34 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
   const [client, setClient] = useState<Client | null>(null);
   const [generating, setGenerating] = useState(false);
   const printRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  const [previewHeight, setPreviewHeight] = useState(1123);
+
+  const updateScale = () => {
+    if (containerRef.current && printRef.current) {
+      const parentWidth = containerRef.current.clientWidth - 32; // 32px padding
+      const newScale = Math.min(1, parentWidth / 794);
+      setScale(newScale);
+      setPreviewHeight(printRef.current.scrollHeight);
+    }
+  };
 
   useEffect(() => {
     if (isOpen && quotation) {
       getSettings().then(setSettings);
       getClient(quotation.clientId).then(setClient);
+      setTimeout(updateScale, 150);
     }
   }, [isOpen, quotation]);
+
+  useEffect(() => {
+    if (isOpen) {
+      updateScale();
+      window.addEventListener("resize", updateScale);
+    }
+    return () => window.removeEventListener("resize", updateScale);
+  }, [isOpen, settings, client, template]);
 
   const handleDownload = async () => {
     if (!printRef.current || !quotation) return;
@@ -93,15 +114,15 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
     <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-xl w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-white z-10 shrink-0">
-          <div className="flex items-center gap-4">
-            <h2 className="text-xl font-bold text-gray-900">Share Quotation</h2>
-            <div className="flex bg-gray-100 rounded-lg p-1">
+        <div className="px-4 py-4 border-b border-gray-100 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center bg-white z-10 shrink-0">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full md:w-auto">
+            <h2 className="text-xl font-bold text-gray-900 font-sans">Share Quotation</h2>
+            <div className="flex bg-gray-100 rounded-lg p-1 w-fit">
               {(["wholesale", "retail", "loading"] as TemplateType[]).map((t) => (
                 <button
                   key={t}
                   onClick={() => setTemplate(t)}
-                  className={`px-4 py-1.5 rounded-md text-sm font-medium capitalize transition-colors ${
+                  className={`px-3 py-1.5 rounded-md text-xs sm:text-sm font-medium capitalize transition-colors ${
                     template === t ? "bg-white text-gray-900 shadow-sm" : "text-gray-500 hover:text-gray-700"
                   }`}
                 >
@@ -110,36 +131,51 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
               ))}
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleDownload}
-              disabled={generating}
-              className="flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors disabled:opacity-50 text-sm"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              {generating ? "Generating..." : "Download PDF"}
-            </button>
-            <button
-              onClick={handleShareWhatsApp}
-              className="flex items-center px-4 py-2 border border-primary text-primary rounded-lg hover:bg-primary-light transition-colors text-sm"
-            >
-              <Share2 className="w-4 h-4 mr-2" />
-              WhatsApp
-            </button>
-            <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-500 ml-2">
+          <div className="flex items-center gap-2 w-full justify-between sm:justify-end md:w-auto">
+            <div className="flex gap-2">
+              <button
+                onClick={handleDownload}
+                disabled={generating}
+                className="flex items-center px-3 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors disabled:opacity-50 text-xs sm:text-sm"
+              >
+                <Download className="w-4 h-4 mr-1.5 sm:mr-2" />
+                {generating ? "Generating..." : "Download PDF"}
+              </button>
+              <button
+                onClick={handleShareWhatsApp}
+                className="flex items-center px-3 py-2 border border-primary text-primary rounded-lg hover:bg-primary-light transition-colors text-xs sm:text-sm"
+              >
+                <Share2 className="w-4 h-4 mr-1.5 sm:mr-2" />
+                WhatsApp
+              </button>
+            </div>
+            <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-500">
               <X className="w-6 h-6" />
             </button>
           </div>
         </div>
 
         {/* Preview Area - Zoomed out container */}
-        <div className="flex-1 overflow-auto bg-gray-100 p-8 flex justify-center">
+        <div ref={containerRef} className="flex-1 overflow-auto bg-gray-100 p-4 flex justify-center items-start">
           <div 
-            className="bg-white shadow-lg relative transform origin-top"
-            style={{ width: "210mm", minHeight: "297mm", padding: "15mm" }} // A4 Size in MM
-            ref={printRef}
+            style={{ 
+              width: `${794 * scale}px`, 
+              height: `${previewHeight * scale}px`, 
+              overflow: "hidden",
+              position: "relative"
+            }}
           >
-            {/* --- PDF CONTENT START --- */}
+            <div 
+              className="bg-white shadow-lg origin-top-left absolute"
+              style={{ 
+                width: "794px", 
+                minHeight: "1123px", 
+                padding: "56px", // approx 15mm
+                transform: `scale(${scale})`,
+              }}
+              ref={printRef}
+            >
+              {/* --- PDF CONTENT START --- */}
             {settings && (
               <div className="text-gray-900 font-sans">
                 {/* Header Section */}

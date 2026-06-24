@@ -63,6 +63,7 @@ export default function Sidebar() {
                 <Link
                   key={item.name}
                   href={item.href}
+                  onClick={() => setIsOpen(false)}
                   className={`
                     group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all
                     ${isActive 
