@@ -266,15 +266,7 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
                   )}
                 </div>
 
-                {/* Signature */}
-                <div className="mt-16 flex justify-end">
-                  <div className="text-center">
-                    <div className="border-b border-gray-400 w-48 mb-2"></div>
-                    <p className="text-xs font-bold uppercase">For {settings.name}</p>
-                    <p className="text-xs text-gray-500">Authorized Signatory</p>
-                  </div>
-                </div>
-                
+
               </div>
             )}
             {/* --- PDF CONTENT END --- */}
