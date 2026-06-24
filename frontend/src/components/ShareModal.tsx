@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { X, Download, Share2 } from "lucide-react";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { Quotation } from "@/lib/services/quotations";
 import { CompanySettings, getSettings } from "@/lib/services/settings";
@@ -124,14 +124,16 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
             {settings && (
               <div className="text-gray-900 font-sans">
                 {/* Header Section */}
-                <div className="flex justify-between items-start border-b-2 border-primary pb-4 mb-6">
-                  <div className="w-1/3">
+                <div className="flex justify-between items-center border-b-2 border-primary pb-4 mb-6">
+                  <div className="flex items-center gap-3">
                     {settings.logo && (
-                      <img src={settings.logo} alt="Company Logo" style={{ maxHeight: "170px", objectFit: "contain" }} />
+                      <div className="bg-black p-2 rounded-md flex items-center justify-center" style={{ width: "120px", height: "60px" }}>
+                        <img src={settings.logo} alt="Company Logo" className="max-h-full max-w-full object-contain" />
+                      </div>
                     )}
+                    <h1 className="text-2xl font-bold text-primary uppercase">{settings.name}</h1>
                   </div>
-                  <div className="w-2/3 text-right text-sm">
-                    <h1 className="text-2xl font-bold text-primary uppercase mb-1">{settings.name}</h1>
+                  <div className="text-right text-sm">
                     {settings.address1 && <p>{settings.address1}</p>}
                     {settings.address2 && <p>{settings.address2}</p>}
                     {settings.phone && <p>Ph: {settings.phone}</p>}
@@ -168,14 +170,14 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
                 <table className="w-full text-left border-collapse text-sm mb-6">
                   <thead>
                     <tr className="bg-primary text-white">
-                      <th className="border border-gray-300 p-2 w-10 text-center">S.No</th>
-                      <th className="border border-gray-300 p-2">Items</th>
-                      <th className="border border-gray-300 p-2 w-20 text-center">Picture</th>
-                      {template === "loading" && <th className="border border-gray-300 p-2 text-center">Model No.</th>}
-                      <th className="border border-gray-300 p-2 w-16 text-center">QTY</th>
-                      {template === "wholesale" && <th className="border border-gray-300 p-2 w-24 text-right">MRP</th>}
-                      {template === "wholesale" && <th className="border border-gray-300 p-2 w-24 text-right">Rate</th>}
-                      {template !== "loading" && <th className="border border-gray-300 p-2 w-28 text-right">Amount</th>}
+                      <th className="border border-gray-300 p-2 w-10 text-center uppercase">S.No</th>
+                      <th className="border border-gray-300 p-2 text-center uppercase">Items</th>
+                      <th className="border border-gray-300 p-2 w-20 text-center uppercase">Picture</th>
+                      {template === "loading" && <th className="border border-gray-300 p-2 text-center uppercase">Model No.</th>}
+                      <th className="border border-gray-300 p-2 w-16 text-center uppercase">QTY</th>
+                      {template === "wholesale" && <th className="border border-gray-300 p-2 w-24 text-center uppercase">MRP</th>}
+                      {template === "wholesale" && <th className="border border-gray-300 p-2 w-24 text-center uppercase">Rate</th>}
+                      {template !== "loading" && <th className="border border-gray-300 p-2 w-28 text-center uppercase">Amount</th>}
                     </tr>
                   </thead>
                   <tbody>
