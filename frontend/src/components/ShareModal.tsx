@@ -124,16 +124,18 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
             {settings && (
               <div className="text-gray-900 font-sans">
                 {/* Header Section */}
-                <div className="flex justify-between items-center border-b-2 border-primary pb-4 mb-6">
-                  <div className="flex items-center gap-3">
+                <div className="flex justify-between items-start border-b-2 border-primary pb-4 mb-6">
+                  <div className="w-1/3">
                     {settings.logo && (
-                      <div className="bg-black p-2 rounded-md flex items-center justify-center" style={{ width: "120px", height: "60px" }}>
-                        <img src={settings.logo} alt="Company Logo" className="max-h-full max-w-full object-contain" />
-                      </div>
+                      <img 
+                        src={settings.logo} 
+                        alt="Company Logo" 
+                        style={{ maxHeight: "80px", objectFit: "contain", filter: "brightness(0)" }} 
+                      />
                     )}
-                    <h1 className="text-2xl font-bold text-primary uppercase">{settings.name}</h1>
                   </div>
-                  <div className="text-right text-sm">
+                  <div className="w-2/3 text-right text-sm">
+                    <h1 className="text-2xl font-bold text-black uppercase mb-1">{settings.name}</h1>
                     {settings.address1 && <p>{settings.address1}</p>}
                     {settings.address2 && <p>{settings.address2}</p>}
                     {settings.phone && <p>Ph: {settings.phone}</p>}
