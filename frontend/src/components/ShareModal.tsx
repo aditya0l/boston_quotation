@@ -166,15 +166,13 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
                     {client?.phone && <p>Ph: {client.phone}</p>}
                     {client?.gst && <p className="font-bold mt-1">GSTIN: {client.gst}</p>}
                   </div>
-                </div>
-
-                {/* Items Table */}
+                </div>                 {/* Items Table */}
                 <table className="w-full text-left border-collapse text-sm mb-6">
                   <thead>
                     <tr className="bg-primary text-white">
                       <th className="border border-gray-300 p-2 w-10 text-center uppercase">S.No</th>
                       <th className="border border-gray-300 p-2 text-center uppercase">Items</th>
-                      <th className="border border-gray-300 p-2 w-20 text-center uppercase">Picture</th>
+                      <th className="border border-gray-300 p-2 w-32 text-center uppercase">Picture</th>
                       {template === "loading" && <th className="border border-gray-300 p-2 text-center uppercase">Model No.</th>}
                       <th className="border border-gray-300 p-2 w-16 text-center uppercase">QTY</th>
                       {template === "wholesale" && <th className="border border-gray-300 p-2 w-24 text-center uppercase">MRP</th>}
@@ -186,17 +184,17 @@ export default function ShareModal({ isOpen, onClose, quotation }: ShareModalPro
                     {quotation.items.map((item, index) => (
                       <tr key={item.id} className="border-b border-gray-300">
                         <td className="border border-gray-300 p-2 text-center align-middle">{index + 1}</td>
-                        <td className="border border-gray-300 p-2 font-medium align-middle">{item.productName}</td>
+                        <td className="border border-gray-300 p-2 font-medium align-middle text-center">{item.productName}</td>
                         <td className="border border-gray-300 p-2 text-center align-middle">
                           {item.productImage ? (
-                            <img src={item.productImage} alt={item.productName} className="w-16 h-16 object-contain mx-auto" />
+                            <img src={item.productImage} alt={item.productName} className="w-24 h-24 object-contain mx-auto" />
                           ) : "-"}
                         </td>
                         {template === "loading" && <td className="border border-gray-300 p-2 text-center align-middle text-xs">{item.modelNo}</td>}
                         <td className="border border-gray-300 p-2 text-center font-bold align-middle">{item.qty}</td>
-                        {template === "wholesale" && <td className="border border-gray-300 p-2 text-right align-middle line-through text-gray-500 text-xs">₹{item.mrp}</td>}
-                        {template === "wholesale" && <td className="border border-gray-300 p-2 text-right align-middle">₹{item.rate.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</td>}
-                        {template !== "loading" && <td className="border border-gray-300 p-2 text-right font-bold align-middle">₹{item.amount.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</td>}
+                        {template === "wholesale" && <td className="border border-gray-300 p-2 text-center align-middle line-through text-gray-500 text-xs">₹{item.mrp}</td>}
+                        {template === "wholesale" && <td className="border border-gray-300 p-2 text-center align-middle">₹{item.rate.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</td>}
+                        {template !== "loading" && <td className="border border-gray-300 p-2 text-center font-bold align-middle">₹{item.amount.toLocaleString("en-IN", { maximumFractionDigits: 2 })}</td>}
                       </tr>
                     ))}
                   </tbody>
